@@ -1,0 +1,15 @@
+logging.level.org.springframework.boot.context.properties: DEBUG
+
+gsheet_application_name: "example mock server refresher"
+gsheet_client_file_path: "src/main/resources/client.json"
+gsheet_spreadsheet_id: "dummy"
+gsheet_range: "Contracts!A2:E"
+gsheet_csv_gen_path: "src/main/resources/mock_responses.csv"
+logging.level.org.springframework.security: DEBUG
+mock_server_host: "https://example-mock-server.example.com"
+example_domain_verification_query_path: "dummy"
+example_domain_verification_query_response: "dummy"
+spring.security.user.name: "dummy"
+spring.security.user.password: "dummy"
+
+upstreams:

@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-mock-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-mock-server
+  template:
+    metadata:
+      labels:
+        app: example-mock-server
+    spec:
+      initContainers:
+        - name: init-mount-from-gcs
+          image: google/cloud-sdk:latest
+          workingDir: /app
+          command:
+            - sh
+            - -c
+            - |
+              export GOOGLE_APPLICATION_CREDENTIALS="/secrets/key.json"
+              gcloud auth activate-service-account --key-file=/secrets/key.json
+              gsutil cp gs://example-mock-server-artifacts/example_mock_server.jar /app/example_mock_server.jar
+              gsutil cp gs://example-mock-server-artifacts/resources.jar /app/resources.jar
+              jar -xf /app/resources.jar
+          volumeMounts:
+            - name: example-mock-server-work-vol
+              mountPath: /app
+            - name: example-mock-server-gcs-key
+              mountPath: /secrets
+              readOnly: true
+          securityContext:
+            runAsUser: 0
+            capabilities:
+              add:
+                - SYS_ADMIN
+      containers:
+        - name: server
+          image: openjdk:22-jdk
+          command: ["java"]
+          args: ["-jar", "/app/example_mock_server.jar"]
+          workingDir: /app
+          volumeMounts:
+            - name: example-mock-server-work-vol
+              mountPath: /app
+          ports:
+            - containerPort: 8080
+      volumes:
+        - name: example-mock-server-work-vol
+          emptyDir: {}
+        - name: example-mock-server-gcs-key
+          secret:
+            secretName: example-mock-server-gcs-key

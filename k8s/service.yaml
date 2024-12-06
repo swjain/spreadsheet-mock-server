@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-mock-server-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
+    # cloud.google.com/load-balancer-ip: "example-mock-static-ip"
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80        
+      targetPort: 8080
+  selector:
+    app: example-mock-server 

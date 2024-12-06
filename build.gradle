@@ -1,0 +1,42 @@
+plugins {
+    id 'org.springframework.boot' version '3.3.2'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
+}
+
+group = 'org.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.opencsv:opencsv:5.5.2'
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.32.1'
+    implementation 'com.google.apis:google-api-services-sheets:v4-rev612-1.25.0' // Updated version
+    implementation 'com.google.apis:google-api-services-drive:v3-rev136-1.25.0'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+// tasks.named('test') {
+//     useJUnitPlatform()
+// }
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'org.mock.req_server.ReqServerApplication.java' 
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}

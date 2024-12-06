@@ -1,10 +1,10 @@
-package org.mock.req_server;
+package org.example.mockserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ReqServerApplicationTests {
+class MockServerAppTests {
 
     @Test
     void contextLoads() {
